@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Open+Sans:wght@300&display=swap');
+body {font-family:'Bree Serif'}
+#userBookForm {
+    top:-300px;
+    position: absolute;
+    width: 300px;
+    left:0;
+    right:0;
+    background:white;
+    margin:auto;
+    box-shadow: 1px 1px 10px black;
+    padding:20px;
+    border-radius:5px;
+    z-index:1000;
+}
+#userBookForm h2 {
+    border-bottom:1px solid gray;
+    margin-top:0;
+}
+#userBookForm span.close-form {
+    border: 1px solid gray;
+    float: right;
+    padding: 2px 5px;
+    position: relative;
+    top: -10px;
+    right: -10px;
+    cursor: pointer;
+}
+#userBookForm span.close-form:hover {
+    background:#efefef;
+}
+label, input {
+    flex: 0 0 48%;
+}
+.fields {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom:15px;
+}
+#userBookForm.show-form {    
+    animation: showForm .5s linear forwards;
+}
+#lights-down.show {
+    animation: lights .25s linear forwards;
+}
+@keyframes lights {
+    0% { z-index:-1; opacity: 0;}
+    100% { z-index:999; opacity: .75;}
+}
+@keyframes showForm {
+    0% { top:-300px; opacity: 0; }
+    100% { top: 100px; opacity: 1; }
+}
+
+#lights-down {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    opacity: 0;
+    z-index:-1;
+}
+#addBook {
+    width: fit-content;
+    background: beige;
+    padding: 2px 20px;
+    border: 1px solid burlywood;
+    border-radius: 20px;
+    cursor: pointer;
+    float:right;
+}
+
+ul#library-list {
+    /*transform: rotate(90deg);*/
+    display:flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    margin:0;
+    padding:0;
+    align-content: space-around;
+}
+
+#library-list li {
+    list-style: none;
+    flex:0 0 20%;
+    border:1px solid black;
+    padding:5px 10px 10px 20px;
+    margin:10px;
+}
+#library-list li span {
+    font-family:'Open Sans';
+}
+span.book-pages {
+    float: right;
+}
