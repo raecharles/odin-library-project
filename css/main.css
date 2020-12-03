@@ -92,7 +92,7 @@ ul#library-list {
 
 #library-list li {
     list-style: none;
-    flex:0 0 90%;
+    flex:0 0 85%;
     border:1px solid black;
     padding:5px 20px 10px 20px;
     margin:10px;
