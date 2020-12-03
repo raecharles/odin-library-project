@@ -37,7 +37,7 @@ div#switchView {
     background:#efefef;
 }
 label, input {
-    flex: 0 0 48%;
+    flex: 0 0 45%;
 }
 .fields {
     display: flex;
