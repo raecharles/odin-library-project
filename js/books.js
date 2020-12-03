@@ -25,8 +25,11 @@ Library.prototype.printLibrary = function()
     var view = viewFactory(this.type);
     view.addToDOM();
     this.books.forEach((book,index) => {
+       if (!book.deleted)
+       {
         var item = view.createItem(book,index);
         view.insertItem();
+       }
     });
 }
 
@@ -62,7 +65,7 @@ Book.prototype.toggleRead = function(id) {
 const viewFactory = (type) => {
     switch (type)
         {
-            case 'list':
+            case 'card':
                 return new listView();
             default:
                 return new tableView();
@@ -91,6 +94,10 @@ BookView.prototype.addToDOM = function() {
     document.getElementById('library').append(this.elem);
 }
 
+BookView.prototype.isReadClass = function(isRead) {
+    return (isRead) ? 'fa fa-check-square-o' : 'fa fa-square-o';
+}
+
 class listView extends BookView {
     constructor()
     {
@@ -103,10 +110,12 @@ class listView extends BookView {
     {
         this.item = `<!--book-->
         <li class="book" data-index="${index}" id="book-${index}">
-        <p class="book-title"><span class="book-pages">${book.pages}</span> ${book.title}</p>
-        <span class="book-author">${book.author}</span>
-        <span class="book-read" onclick="toggleRead(this.id)" id="read-${index}">${book.isRead}</span>
-        <span class="fa fa-trash-o remove-book" aria-hidden="true" onclick="removeBook(${index})></span>
+        <p class="book-title"><span class="${this.isReadClass(book.isRead)} book-read" aria-hidden="true" onclick="toggleRead(this.id)" id="read-${index}"></span>${book.title}</p>
+        <span class="book-author">${book.author}</span>    
+        <div class="dets">   
+        <span class="book-pages">${book.pages}</span> 
+        <span class="fa fa-trash-o" aria-hidden="true" onclick="removeBook(${index})"></span>
+        </div>
         </li>
         <!--/book-->`;
     }
@@ -127,20 +136,21 @@ class tableView extends BookView {
             <th>Title</th>
             <th>Author</th>
             <th>Pages</th>
-            <th>Toggle Read</th>
-            <th>Remove</th>
+            <th>Read</th>
+            <th>Recycle</th>
             </tr>`;
         
     }
     createItem(book,index)
     {
+        let read = (book.isRead) ? 'fa-check-square-o' : 'fa-square-o';
         this.item = `<!--book-->
         <tr class="book-row" data-index="${index}" id="book-${index}">
         <td class="book-title">${book.title}</td>
         <td class="book-author">${book.author}</td>
         <td class="book-pages">${book.pages}</td>
-        <td class="book-read" onclick="toggleRead(this.id)" id="read-${index}">${book.isRead}</td>
-        <td class="remove-book"><span class="fa fa-trash-o" aria-hidden="true" onclick="removeBook(${index})></span></td>
+        <td class="book-read"><span class="${this.isReadClass(book.isRead)}" aria-hidden="true" onclick="toggleRead(this.id)" id="read-${index}"></span></td>
+        <td class="remove-book"><span class="fa fa-trash-o" aria-hidden="true" onclick="removeBook(${index})"></span></td>
         </tr>
         <!--/book-->`;
     }
@@ -155,6 +165,15 @@ class tableView extends BookView {
 ///////////*/
 var form = document.getElementById('userBookForm');
 var lights = document.getElementById('lights-down');
+//SWITCH VIEW
+const viewSwitch = document.querySelectorAll('#switchView span')
+for (const el of viewSwitch) {
+    el.addEventListener('click',(e) => { 
+        myLibrary.type = e.target.innerHTML.toLowerCase();
+        document.getElementById('library').innerHTML = '';
+        myLibrary.printLibrary();
+    });
+}
 //SHOW FORM
 document.getElementById('addBook').addEventListener('click',() => { 
     form.classList.add('show-form');
@@ -173,7 +192,6 @@ document.getElementById('userBookForm').addEventListener('submit',(event) => {
 function submitBook()
 {
     var el = document.getElementById('userBookForm');
-    //var forms = el.querySelectorAll('input,select');
     var title = el.querySelector('#userBookTitle').value;
     var author = el.querySelector('#userBookAuthor').value;
     var pages = el.querySelector('#userBookPages').value;
@@ -194,7 +212,9 @@ function toggleRead(id)
     let idx = id.substring(id.indexOf('-')+1);
     let book = myLibrary.books[idx];
     book.toggleRead(id);
-    document.getElementById(id).innerText = book.isRead; 
+    //let newClass = (book[idx].isRead) ? 'fa'
+    document.getElementById(id).className = BookView.prototype.isReadClass(book.isRead);
+
 }
 
 function removeBook(idx)
@@ -208,7 +228,7 @@ function removeBook(idx)
 // INIT
 ////////*/
 const myLibrary = new Library();
-const displayType = 'table';
+myLibrary.type = 'card';
 
 let lib = [
     ['The Hobbit', 'J.R.R. Tolkien', 295, false],
@@ -224,5 +244,4 @@ lib.forEach((book) => {
     console.log(myLibrary);
 });
 
-myLibrary.type = displayType;
 myLibrary.printLibrary();

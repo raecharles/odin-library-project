@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Open+Sans:wght@300&display=swap');
 body {font-family:'Bree Serif'}
+div#switchView {
+    position: absolute;
+    right: 14px;
+    top: 8px;
+    font: .75em 'Open Sans';
+}
+
 #userBookForm {
     top:-300px;
     position: absolute;
@@ -68,6 +75,9 @@ label, input {
     border-radius: 20px;
     cursor: pointer;
     float:right;
+    position: relative;
+    top:12px;
+    right:5px;
 }
 
 ul#library-list {
@@ -82,14 +92,70 @@ ul#library-list {
 
 #library-list li {
     list-style: none;
-    flex:0 0 20%;
+    flex:0 0 90%;
     border:1px solid black;
-    padding:5px 10px 10px 20px;
+    padding:5px 20px 10px 20px;
     margin:10px;
+    min-height: 110px;
+    position: relative;
 }
-#library-list li span {
+#library-list p.book-title {
+    margin-bottom:0;
+}
+#library-list li span:not(.fa), #library-table td:not(.fa) {
     font-family:'Open Sans';
 }
-span.book-pages {
+#library-list span.book-pages {
+    float:right;
+    margin-left: 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 1px 5px;
+    font-size: .8em;
+    background: green;
+    color: white;
+}
+#library-list span.book-author {
+    display: block;
+}
+#library-list span.fa-check-square-o, #library-list span.fa-square-o {
     float: right;
+    margin-left: 10px;
+    position: relative;
+    top:5px;
+}
+.dets {
+    position: absolute;
+    bottom: 15px;
+    right: 20px;
+}
+/*table*/
+#library-table {
+    width:100%;
+    margin:auto;
+}
+#library-table th:first-child, #library-table th:nth-child(2) {
+    text-align:left;
+}
+
+.book-pages, .book-read, .remove-book {
+    text-align:center;
+}
+.book-read, .fa-trash-o, #switchView span {
+    cursor: pointer;
+}
+
+@media (min-width:768px) {
+    #library-list li {
+        flex: 0 0 40%;
+    }
+}
+
+@media (min-width:1024px) {
+    #library-list li {
+        flex: 0 0 20%;
+    }
+    #library-table {
+        width:75%;
+    }
 }
