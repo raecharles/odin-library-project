@@ -8,7 +8,7 @@ div#switchView {
 }
 
 #userBookForm {
-    top:-300px;
+    top:-400px;
     position: absolute;
     width: 300px;
     left:0;
@@ -55,7 +55,7 @@ label, input {
     100% { z-index:999; opacity: .75;}
 }
 @keyframes showForm {
-    0% { top:-300px; opacity: 0; }
+    0% { top:-400px; opacity: 0; }
     100% { top: 100px; opacity: 1; }
 }
 
