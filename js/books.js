@@ -1,64 +1,69 @@
 /*////////
 // LIBARY
 ////////*/
-function Library() 
+class Library
 {
-    this.books = [];
-    this.type = 'table';
-    this.viewId = 'library-table';
-}
+    constructor() {
+        this.books = [];
+        this.type = 'table';
+        this.viewId = 'library-table';
+    }
 
-Library.prototype.addBook = function(book)
-{
-    book.deleted = 0;
-    this.books.push(book);
-    console.log(myLibrary);
-}
+    addBook(book)
+    {
+        book.deleted = 0;
+        this.books.push(book);
+        console.log(myLibrary);
+    }
 
-Library.prototype.removeBook = function(idx)
-{
-    this.books.splice(idx, 1);
-}
+    removeBook(idx)
+    {
+        this.books.splice(idx, 1);
+    }
 
-Library.prototype.printLibrary = function() 
-{
-    var view = viewFactory(this.type);
-    view.addToDOM();
-    this.books.forEach((book,index) => {
-       if (!book.deleted)
-       {
-        var item = view.createItem(book,index);
+    printLibrary() 
+    {
+        var view = viewFactory(this.type);
+        view.addToDOM();
+        this.books.forEach((book,index) => {
+        if (!book.deleted)
+        {
+            var item = view.createItem(book,index);
+            view.insertItem();
+        }
+        });
+    }
+
+    updateView()
+    {
+        var view = viewFactory(this.type);
+        view.createItem(this.books[this.books.length-1], this.books.length-1);
         view.insertItem();
-       }
-    });
-}
-
-Library.prototype.updateView = function()
-{
-    var view = viewFactory(this.type);
-    view.createItem(this.books[this.books.length-1], this.books.length-1);
-    view.insertItem();
+    }
 }
 
 /*////////
 // BOOK
 /////////*/
-function Book(title, author, pages, isRead)
+class Book
 {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isRead = isRead;
+    constructor (title, author, pages, isRead) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.isRead = isRead;
+    }
+
+    info() {
+        let status = (this.isRead) ? 'is read.' : 'not read yet.';
+        return this.title + ' by ' + this.author + ', ' + this.pages + ', ' + status;
+    }
+    
+    toggleRead(id) {
+        this.isRead = (this.isRead) ? false : true;   
+    }
 }
 
-Book.prototype.info = function() {
-    let status = (this.isRead) ? 'is read.' : 'not read yet.';
-    return this.title + ' by ' + this.author + ', ' + this.pages + ', ' + status;
-}
-
-Book.prototype.toggleRead = function(id) {
-    this.isRead = (this.isRead) ? false : true;   
-}
 /*/////////////
 // VIEW TYPES
 /////////////*/
@@ -80,22 +85,24 @@ class BookView {
         this.elem;
         this.item;
     }
+
     createItem(book,index)
     {
         console.log('parent class');
     }
+
     insertItem(el, item)
     { 
         el.insertAdjacentHTML('beforeend',item);
     }
-}
 
-BookView.prototype.addToDOM = function() {
-    document.getElementById('library').append(this.elem);
-}
-
-BookView.prototype.isReadClass = function(isRead) {
-    return (isRead) ? 'fa fa-check-square-o' : 'fa fa-square-o';
+    addToDOM() {
+        document.getElementById('library').append(this.elem);
+    }
+    
+    isReadClass(isRead) {
+        return (isRead) ? 'fa fa-check-square-o' : 'fa fa-square-o';
+    }
 }
 
 class listView extends BookView {
